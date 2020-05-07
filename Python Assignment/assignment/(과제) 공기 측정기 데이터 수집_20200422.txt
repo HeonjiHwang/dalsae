@@ -1,0 +1,179 @@
+=============================================================
+[2020-04-20]
+=============================================================
+개발 언어 : Python3
+
+* 공기 측정기 (Meter)
+- IP : 192.168.1.164
+- Port : 2002 (UDP)
+
+
+1. 측정기는 UDP 소켓으로 통신한다. (UDP : 2002)
+
+	Client			Meter
+
+	000.000.000:12345(임의의 포트)  -->	192.168.1.164:2002		(UDP : 데이터 요청)
+	000.000.000:12345(임의의 포트)  <--	192.168.1.164:2002		(UDP : 데이터 전송)
+
+	측정기는 요청 명령어를 받으면면 해당 client의 접속 Port로 데이터를 전송해준다. (UDP)
+
+2. 측정기로  부터 시리얼 및 pm25(초미세먼지), 습도(Humidity), 온도(Temperature) 정보를 수집한다. 
+
+	1) 시리얼 정보 수집  (최초 1회)
+	- TX : I
+	- RX : DLISP,65019,MC16,PM-711,3191 V1.0.5,Dry V3.2.3,Base V3.12.4
+
+	Serial = 65019
+
+	2) 공기질 정보 수집 (30초 주기로)
+
+	[column 정보 수집]
+	- TX : g
+	- RX : gyyyy,mm,dd,hh,nn,ss,dt,MS,iPM,cPM,SampPress(kPa),SampTemp(),SampHum(),AirPress(kPa),AirTemp(),AirHUM(),lFlow(Lpm),`Flow(Lpm),CtrlFlow(Lpm),FlowCtrl(mV),FlowCtrl,HVolt(V),InnerTemp(),DetSig(kcps),revTemp(),totalFlow(m3),totalFlow(m3),DetSig(kcps),AirPress(kPa),SampPress(kPa),SampTemp(),Det-W(ug),aveMFlow,aveAFlow,cntPM,intPM,avePM,PM-rawW,PM-baseW,PM-integW,PM-diffW,PM-integC,diffPress,InitPress,AP0,P0,T0,revT0,integWdet,integWobc,contDet,MeasStatus
+
+	[data 수집]
+	- TX : G
+	- RX : G2020,03,20,12,12,57,43910.50899306,2,20.6,20.6,84.96,22.41,29.21,100.91,22.39,29.38,16.51,16.72,16.72,2388.0,0,-912.71,20.64,127.509,22.42,0.21220,0.16619,127.704,100.91,84.98,22.48,2.45,16.50,16.70,20.6,3.9,20.6,4.44,2.45,2.45,0.08,2.4,0.31,85.25,100.92,85.67,23.15,23.04,2.41,0.000,15.78,2
+
+
+	수집할 데이터 : iPM, SampHum, SampTemp  (총 3개)
+
+	iPM = 20.6
+	SampHum = 29.21
+	SampTemp = 22.41
+
+
+3. 주기적으로 데이터를 수집해서 콘솔 또는 파일로 저장한다.
+
+
+4. (추가 미션) 서비스로 동작하도록 하여 백그라운드 동작하도록 한다.
+  - Window 리부팅되어도 자동으로 시작.
+  - 데이터는 파일로 저장.
+
+
+
+
+=============================================================
+[2020-04-22] 추가 내용
+=============================================================
+
+1. 설정 정보를 ini 파일로 부터 받아 들인다.
+
+    * 파일 명 : setup.conf
+    * 파일 내용 :
+	
+    ex)
+
+    [SYSTEM]
+    METER_IP=192.168.1.164
+    METER_PORT=2002
+    ...
+
+2. 시리얼 수집 프로세스 보완
+
+  1) 최초 동작 시 시리얼 정보 수집
+  2) 수집 실패 시, 15초 주기로 반복 try
+  3) 시리얼을 정상 수집 후, 데이터 수집 시작.
+
+
+3. 데이터 수집 프로세스 보완
+
+  1) 30초 주기로 데이터 수집
+  
+  2) 5분 이상 데이터 수집 실패 시, 시리얼 수집부터 다시 시작. (로그 기록)
+
+  3) 데이터와 로그 파일을 분리해서 기록
+
+ 	- 데이터 파일 : data.txt (Time, Serial, iPM, SampHum, SampTemp)
+
+	ex)
+	2020-04-22 12:15:00, TEST-METER, 10.1, 21.4, 25.0
+	2020-04-22 12:15:30, TEST-METER, 12.1, 15.3, 15.0
+	...
+
+ 	- 로그 파일 : log.txt (Time, 로그 내용)
+	
+	ex)
+	2020-04-22 12:15:10, 프로세스 시작
+	2020-04-22 12:15:20, 시리얼 수집 성공 (TEST-METER)
+	2020-04-22 12:15:30, 데이터 수집 시작
+	2020-04-22 12:15:40, 데이터 수집 실패
+	2020-04-22 12:15:50, 데이터 재수집 시작
+	...
+	2020-04-22 12:25:00, 프로세스 종료
+
+
+4. 시리얼 변경 감지 프로세스 추가
+
+  1) 주기적으로 시리얼이 바뀌었는지 확인 (5분)
+  2) 변경 확인된 시점 부터 바뀐 시리얼로 데이터 기록.
+  3) 시리얼 바뀐 로그 기록
+  
+
+
+=============================================================
+[2020-04-24] 추가 내용
+=============================================================
+
+Python 데몬에서 수집한 데이터를 Web-Service를 통해 DB에 저장한다.
+
+
+1. DB 구성 (PostgreSQL 12)
+
+  테이블 리스트:
+		
+	* meter_info
+		meter_id : int
+		meter_serial : varchar(32)
+		
+	* meter_data
+		meter_id : int
+		pm25  : double
+		humidity : double
+		temperature : double
+		collect_time : timestamp
+			
+
+2. Web-Service 구축
+	
+	1) Spring Boot 이용 (Spring Framework)
+
+	2) 수집한 데이터를 Web Service를 통해 DB 저장
+
+		python  --> Web-Service (Spring boot) --> PosgreSQL
+
+	3) Restful API 방식으로 데이터 송수신
+	
+	
+		[GET] http://{webservice_ip}:8080/meter/{serial}
+		
+			마지막에 수신한 데이터를 보여줌.
+			
+		[POST] http://{webservice_ip}:8080/meter/{serial}
+		
+			신규 Serial 등록
+	
+		[PUT] http://{webservice_ip}:8080/meter/{serial}
+		
+			해당 Serial의 수집 데이터 저장
+		
+			body : { "pm25": 13.1, "humidity": 32, "temperature": 21.4}
+			
+		[DELETE] http://{webservice_ip}:8080/meter/{serial}
+		
+			해당 Serial를 DB에서 삭제
+
+4. Web-Service에 데이터 요약 정보를 제공하는 URL 추가
+
+	1) 최근 1시간 동안의 각 항목 별 평균, Max 값 데이터를 출력한다
+	
+	[GET] http://{webservice_ip}:8080/summary
+	
+	{
+		{"serial" : "TEST-METER", "time": "2020-04-24 15:10:00", "avg_pm25": 23.1, "max_pm25": 26.2, ... },
+		{"serial" : "TEST-METER", "time": "2020-04-24 15:20:00", "avg_pm25": 23.1, "max_pm25": 26.2, ... },
+		{"serial" : "TEST-METER", "time": "2020-04-24 15:30:00", "avg_pm25": 23.1, "max_pm25": 26.2, ... },
+		...
+	}
+
+
