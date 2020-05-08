@@ -1,0 +1,5 @@
+client에서 server로 랜덤 숫자 queue에 offer 끝
+thread10개까지 받는 코드 완성
+
+*해야할것!!!!
+thread추가( 동기화!! )
