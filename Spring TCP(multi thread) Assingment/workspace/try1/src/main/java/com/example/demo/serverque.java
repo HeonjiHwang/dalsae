@@ -29,10 +29,12 @@ public class serverque {
 				try {
 					//소켓 연결이 되면 스레드로 소켓을 넣어줌
 					//스레드 내에서 작업 처리
+					Thread.currentThread().setName("queue먼저");
 					String threadname = Thread.currentThread().getName();
 					System.out.println("--"+threadname);
 					exService.execute(new ConnectionWrap(sock));
-				}catch(Exception e) { }
+				}catch(Exception e) {
+				}
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -65,8 +67,13 @@ class ConnectionWrap implements Runnable{
 				int read = in.read(bytes);
 				num = new String(bytes,0,read);
 				queue.offer(Integer.parseInt(num));
-				System.out.println(num);
 			}
+			int[] arr = new int[10];
+			for(int i=0;i<10;i++) {
+				arr[i]=queue.poll();
+			}
+			Analysis thread = new Analysis(arr);
+			thread.start();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -76,16 +83,32 @@ class ConnectionWrap implements Runnable{
 				e.printStackTrace();
 			}
 		}
-		int sum = 0;
-		int[] arr = new int[10];
-		for(int i=0;i<10;i++) {
-			arr[i]=queue.poll();
-			System.out.println(arr[i]);
-			sum += arr[i];
-		}
-		double avg = (double)sum/10;
-		System.out.println("더한값"+sum);
-		System.out.println("평균값"+avg);
+		//double avg = (double)sum/10;
+		//System.out.println("더한값"+sum);
+		//System.out.println("평균값"+avg);
 	}
 		
+}
+
+//분석 thread
+class Analysis implements Runnable{
+	private int[] arr = new int[10];
+	//생성자
+	public Analysis(int[] arr) {
+		this.arr = arr;
+	}
+	
+	public synchronized void start() throws InterruptedException {
+		// TODO Auto-generated method stub
+		Thread.sleep(600);
+		for(int i=0;i<10;i++) {
+			System.out.println(arr[i]);
+		}
+		
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+	}
 }

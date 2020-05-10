@@ -1,0 +1,93 @@
+package com.example.demo;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+
+public class serverque {
+	private static final int THREAD_CNT = 10;
+	
+	public static void main(String[] args) {
+		ServerSocket ser_sock = null;
+		Socket sock = null;
+		ThreadPoolExecutor exService = (ThreadPoolExecutor) Executors.newFixedThreadPool(THREAD_CNT);
+		try {
+			ser_sock = new ServerSocket();
+			
+			ser_sock.bind(new InetSocketAddress("localhost",7777));
+
+			System.out.println("[연결 기다리는 중...]");
+			//포트 바인딩
+			while(true) {
+				sock = ser_sock.accept();
+				try {
+					//소켓 연결이 되면 스레드로 소켓을 넣어줌
+					//스레드 내에서 작업 처리
+					Thread.currentThread().setName("queue먼저");
+					String threadname = Thread.currentThread().getName();
+					System.out.println("--"+threadname);
+					exService.execute(new ConnectionWrap(sock));
+				}catch(Exception e) {
+				}
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+}
+
+//소켓 처리용 래퍼 클래스
+class ConnectionWrap implements Runnable{
+	
+	private Socket sock = null;
+	private Queue<Integer> queue = new LinkedList<>();
+	private String num = null;
+	private Thread thread;
+	
+	//생성자
+	public ConnectionWrap(Socket sock) {
+			this.sock = sock;
+	}
+	@Override
+	public void run() {
+		try {
+			//처리할 작업
+			byte[] bytes = null;
+			
+			//데이터 받기
+			InputStream in = sock.getInputStream();
+			for(int i=0;i<10;i++) {
+				bytes = new byte[100];
+				int read = in.read(bytes);
+				num = new String(bytes,0,read);
+				queue.offer(Integer.parseInt(num));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				sock.close();
+			}catch(IOException e) {
+				e.printStackTrace();
+			}
+		}
+		int sum = 0;
+		int[] arr = new int[10];
+		for(int i=0;i<10;i++) {
+			arr[i]=queue.poll();
+			System.out.println(arr[i]);
+		}
+		this.thread = new Analyis)
+		double avg = (double)sum/10;
+		System.out.println("더한값"+sum);
+		System.out.println("평균값"+avg);
+	}
+		
+}
