@@ -3,3 +3,6 @@ http://tcpschool.com/java/java_thread_multi
 
 *thread pool
 https://limkydev.tistory.com/55
+
+*java multithread & syncronize explain and example
+https://ict-nroo.tistory.com/41
