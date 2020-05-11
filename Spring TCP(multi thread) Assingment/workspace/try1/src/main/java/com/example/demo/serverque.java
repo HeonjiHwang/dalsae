@@ -5,7 +5,9 @@ import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.Executors;
@@ -13,6 +15,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 public class serverque {
 	private static final int THREAD_CNT = 10;
+	private static byte[] bytes = new byte[100];
+	
 	public static void main(String[] args) {
 		ServerSocket ser_sock = null;
 		Socket sock = null;
@@ -25,10 +29,14 @@ public class serverque {
 			while(true) {
 				System.out.println("[연결 기다리는 중...]");
 				sock = ser_sock.accept();
-				System.out.println("[연결 수락...]");
 				try {
 					//소켓 연결이 되면 스레드로 소켓을 넣어줌
 					//스레드 내에서 작업 처리
+					InputStream in = sock.getInputStream();
+					int read = in.read(bytes);
+					String serial = new String(bytes,0,read);
+					String status = "연결수락";
+					log(status, serial, sock.getInetAddress().toString(), sock.getPort());
 					exService.execute(new ConnectionWrap(sock));
 				}catch(Exception e) {
 				}
@@ -38,6 +46,13 @@ public class serverque {
 		}
 	}
 	
+	//class로 만들기
+	private static void log(String status, String serial, String socket_addr, int socket_port) {
+		SimpleDateFormat format1 = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss");
+		Calendar time = Calendar.getInstance();
+		String str = format1.format(time.getTime());
+		System.out.println("["+status+"]  "+serial+"  /"+socket_addr+":"+socket_port+"  "+str);
+	}
 }
 
 //소켓 처리용 래퍼 클래스
