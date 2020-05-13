@@ -1,0 +1,75 @@
+AtomicInteger
+AtomicLong
+...
+
+ConcurrentHashMap
+
+
+
+
+
+ArrayList<Object> listPop = new ArrayList<Object>();
+
+SharedData.getInstance().getData( listPop )
+
+
+double dSum = 0;
+double dCount = 0;
+Double dMax = null;
+String maxSerial = null;
+
+for(Object data : listPop) {
+	
+	dSum += data.getData()
+	dCount++;
+
+	if (dMax == null || dMax.getDoubleValue() < data.getData()) {
+		dMax = data.getData();
+		maxSerial = data.getSerial();
+	}
+}
+
+double dAvg = (dCount > 0)? dSum/dCount : 0;
+
+
+
+
+
+
+
+
+
+
+
+
+public class SharedData {
+	// Data queue
+	public ArrayList<Object> listData = new ArrayList<Object>()
+	// Singleton
+	private static SharedData _instance = null;
+
+	//생성자에 private을 사용해서 다른 클래스에서 new를 사용할 수 없게 됨.
+	//->데이터가 그대로 남음
+	private SharedData() {}
+	public static synchronized SharedData getInstance() {
+		if (_instance == null) {
+			_instance = new SharedData();
+		}
+		return _instance;
+	}
+	public void putData(Object data) {
+		synchronized(this.listData) {
+			listData.add(data);
+		}
+	}
+	public void getData(List<Object> listPop) {
+		synchronized(this.listData) {
+			while(listData.size() > 0) {
+				listPop.add( listData.remove(0) );
+			}
+		}
+	}
+}
+SharedData.getInstance().putData( new Object() )
+ArrayList<Object> listPop = new ArrayList<Object>();
+SharedData.getInstance().getData( listPop )
