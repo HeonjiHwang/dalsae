@@ -3,9 +3,9 @@ thread10개까지 받는 코드 완성
 분석 thread추가
 client serial
 client 30초 후 접속해제 & 대기
+client 접속 및 접속 해제 log 기록(시간,serial,socektID)
+log class로 만들기
+공유자원관리
 
 해야할것!
 db에 저장
-client 접속 및 접속 해제 log 기록(시간,serial,socektID)
-공유자원관리
-log class로 만들기
