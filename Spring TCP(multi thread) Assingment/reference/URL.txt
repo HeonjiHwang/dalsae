@@ -6,3 +6,6 @@ https://limkydev.tistory.com/55
 
 *java multithread & syncronize explain and example
 https://ict-nroo.tistory.com/41
+
+*jdbc(mybatis)
+https://projectjt.tistory.com/7

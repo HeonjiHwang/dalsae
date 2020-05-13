@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -8,6 +9,7 @@ public class queue_ex {
 	public static void main(String[] args) {
 		//큐생성
 		Queue<Integer> queue = new LinkedList<>();
+		ArrayList list = new ArrayList();
 		int[] arr = new int[8];
 		int sum = 0;
 		//데이터 집어넣기
@@ -21,15 +23,18 @@ public class queue_ex {
 		queue.offer(3);
 		int a = queue.size();
 		
-		for(int i =0;i<8;i++) {
-			arr[i] = queue.poll();
-			System.out.println(arr[i]);
-			sum += arr[i];
+		
+		System.out.println(a);
+		for(int i=0;i<a;i++) {
+			list.add(i, queue.poll());
 		}
-		double avg = (double)sum/a;
 		//큐 출력
-		System.out.println(sum);
-		System.out.println(avg);
+		System.out.println(list);
+		
+		int c = 15;
+		int b = 30;
+		
+		System.out.println(b%c);
 		
 	}
 }
