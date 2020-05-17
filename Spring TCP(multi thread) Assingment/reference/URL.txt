@@ -9,3 +9,6 @@ https://ict-nroo.tistory.com/41
 
 *jdbc(mybatis)
 https://projectjt.tistory.com/7
+
+*연동
+https://nemew.tistory.com/16
