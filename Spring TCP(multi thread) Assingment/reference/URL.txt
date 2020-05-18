@@ -1,4 +1,4 @@
-*Java & Thread Reference
+﻿*Java & Thread Reference
 http://tcpschool.com/java/java_thread_multi
 
 *thread pool
@@ -10,5 +10,9 @@ https://ict-nroo.tistory.com/41
 *jdbc(mybatis)
 https://projectjt.tistory.com/7
 
+<<<<<<< HEAD
 *scheduling
 https://jeong-pro.tistory.com/186
+=======
+*연동
+https://nemew.tistory.com/16
