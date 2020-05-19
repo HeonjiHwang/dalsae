@@ -32,7 +32,7 @@
   - 최초 Client 실행 시, 임의의 8자리 시리얼을 갖도록 구현 (ex. GUID 생성 후, 앞 8자리 사용)◈
   - 시리얼 생성 후, TCP로 서버에 접속.◈
   - 1초 단위로 random 숫자 만들어 전송. (랜덤 범위: 1 ~ 100)◈
-  - 전송 데이터는 위의 TCP 데이터 포멧으로 전송.◈
+  - 전송 데이터는 위의 TCP 데이터 포멧으로 전송.
   - TCP 접속 후, 30초 동안 데이터 전송. 30초 후에는 TCP 접속 해제.◈
   - 접속 해제 후, 5 ~ 10 초 Random 대기 후, 다시 접속해서 위의 작업 반복 수행.◈
 이번 과제 핵심 keyword :
@@ -48,3 +48,20 @@
 - 식사하는 철학자 문제
 - 교착 상태 (deadlock)에 대한 이해 및 피하는 방법
 - Thread Pool이란? Thread pool을 사용하는 이유?
+
+				Log log = new Log("연결수락", serial, socket.getInetAddress().toString(), socket.getPort());
+				System.out.println(log.toString());
+
+
+
+			Double max = null;
+			String maxSerial = null;
+			SharedData.getInstance().getData(listPop);
+			for(Object a : listPop) {
+				System.out.println(a);
+				if (max == null || max.doubleValue() < (double)a) {
+					max = (double)a;
+				}
+			}
+			maxSerial = SharedData.getInstance().getSerial(max);
+			System.out.println(max+"-"+maxSerial);
