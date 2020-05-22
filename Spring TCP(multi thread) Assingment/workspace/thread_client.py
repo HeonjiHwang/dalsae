@@ -2,9 +2,9 @@ import socket
 import random, time
 import threading
 import uuid
+import struct, binascii
 
 def serial():
-    wait = random.randint(5,10)
     serial = uuid.uuid4()
     serial = str(serial).split('-')
     serial = serial[0]
@@ -13,6 +13,10 @@ def serial():
 def wait():
     wait = random.randint(5,10)
     return wait
+
+def epoch():
+    epoch = int(time.time()*1000)
+    return epoch
 
 def data():
     data = round(random.uniform(1,100),2)
@@ -35,25 +39,41 @@ def works():
 
     while True:
         sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-        sock.connect((HOST,PORT))
+        try:
+            sock.connect((HOST,PORT))
+        except:
+            print('Could not connect to server')
+            time.sleep(5)
+            continue
         while True:
             ser = serial()
-            wai = wait()
-            for i in range(0,5):
+            value1 = struct.pack('8s',ser.encode())
+            try:
+                sock.send(value1)
+            except:
+                print('Could not send serial')
+                time.sleep(5)
+                works()
+            print(ser)
+            for i in range(0,30):
                 dat = data()
-                sock.send(ser.encode())
-                time.sleep(1);
-                sock.send(str(wai).encode())
-                time.sleep(1);
-                sock.send(str(data()).encode())
+                ep = epoch()
+                value2 = struct.pack('8s q f',ser.encode(), ep ,dat)
+                try:
+                    sock.send(value2)
+                except:
+                    print('send data error')
+                    time.sleep(5)
+                    works()
+                print(dat)
                 time.sleep(1)
             sock.close()
             break
 
 
+        wait()
         print('대기시간 :: ',wait())
-        #time.sleep(wait())
-
+        time.sleep(wait())
 
 
 for i in range(0,1):

@@ -44,7 +44,7 @@ double dAvg = (dCount > 0)? dSum/dCount : 0;
 
 public class SharedData {
 	// Data queue
-	public ArrayList<Object> listData = new ArrayList<Object>()
+	private ArrayList<Object> listData = new ArrayList<Object>()
 	// Singleton
 	private static SharedData _instance = null;
 

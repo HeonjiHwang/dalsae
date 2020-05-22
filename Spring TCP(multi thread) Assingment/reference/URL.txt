@@ -16,3 +16,7 @@ https://jeong-pro.tistory.com/186
 =======
 *연동
 https://nemew.tistory.com/16
+
+
+*hex to double (convert)
+https://stackoverflow.com/questions/10708362/convert-hexadecimal-number-string-to-double-precision-number-in-java
