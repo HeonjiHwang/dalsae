@@ -103,7 +103,7 @@ EarthHandler.prototype.cameraSetting = function(){
 		camera.angularSensibilityX = camera.angularSensibilityY = 500;
 	}
 	
-	//RIGHT CLICK DISABLE & ZOOM IN AND OUT DISABLE ON ARCROTATECAMERA
+	//DISABLE RIGHT CLICK & ZOOM AND OUT
 	{
 		var pointers = camera.inputs.attached["pointers"];
 		if(pointers){
