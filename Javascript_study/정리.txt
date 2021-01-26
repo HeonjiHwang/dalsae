@@ -1,4 +1,4 @@
-1. spread ¿¬»êÀÚ
+ï»¿1. spread ì—°ì‚°ìž
    arr = [1,2,3,4];
    Array.prototype.pushAll = function(items){
 	if(!Array.isArray(items)){
@@ -22,10 +22,10 @@
     	var u = u||'http://'
     	console.log(h,c,u)
    }
-   -> undefinedÀÏ °æ¿ì default°ª ÁöÁ¤
+   -> undefinedì¼ ê²½ìš° defaultê°’ ì§€ì •
 
 3. multi-line strings
-   \n¶Ç´Â \t¾øÀÌ ``·Î ¸ÖÆ¼¶óÀÎ °¡´É
+   \në˜ëŠ” \tì—†ì´ ``ë¡œ ë©€í‹°ë¼ì¸ ê°€ëŠ¥
 
 4. destructuring assignment
    var s = {house : 3, mouse : 2}
@@ -44,7 +44,7 @@
        [ 'valueOf_' + getAccounts().join('_') ]: getAccounts()
     }
 
-6. Arrow Functions(Ç×»ó ÀÍ¸íÇÔ¼ö)
+6. Arrow Functions(í•­ìƒ ìµëª…í•¨ìˆ˜)
    $('.btn').click((event) => {
    	this.sendData()
    })
@@ -60,7 +60,7 @@
        .then(function() {
         	console.log('Wheeyee!')
        });
-   ->ÁßÃ¸ setTimeout¿¡¼­ promise¸¦ »ç¿ëÇØ °£´ÜÈ÷ ¸¸µé ¼ö ÀÖ´Ù.
+   ->ì¤‘ì²© setTimeoutì—ì„œ promiseë¥¼ ì‚¬ìš©í•´ ê°„ë‹¨ížˆ ë§Œë“¤ ìˆ˜ ìžˆë‹¤.
 
 8. class
    class baseModel{
@@ -75,4 +75,4 @@
 	   console.log(`Class name : ${this.name}`)
 	}
    }
-   => constructorÀº class³»¿¡¼­ ÇÑ°³¸¸ Á¸ÀçÇÒ ¼ö ÀÖ´Ù. constructor³»¿¡¼­ ¸Þ¼­µå´Â »ç¿ëÇÒ ¼ö ¾ø´Ù
+   => constructorì€ classë‚´ì—ì„œ í•œê°œë§Œ ì¡´ìž¬í•  ìˆ˜ ìžˆë‹¤. constructorë‚´ì—ì„œ ë©”ì„œë“œëŠ” ì‚¬ìš©í•  ìˆ˜ ì—†ë‹¤
