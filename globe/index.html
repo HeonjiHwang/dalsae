@@ -3,75 +3,7 @@
     <head>
 		<title>GLOBE</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <style>
-			html {
-				background-color: #000;
-				width: 100$; 
-				height: 100%;
-			}
-			body {
-				background-color: #000;
-				color: #000;
-				margin: 0px;
-				overflow: hidden;
-            }
-            #viewport {
-                width: 100%; 
-				height: 100%;
-                touch-action: none;
-            }
-			#closeBtn{
-				z-index:1;
-				display:none;
-				position:absolute;
-				width:120px;
-				height:40px;
-				color:white;
-				background-color:#de1313;
-				bottom:30px;
-				right:48%;
-				tarnsform : translateX(-48%);
-				border:none;
-				font-size:18px;
-				cursor:pointer;
-			}
-			#toolTip{
-				position:fixed;
-				color:white;
-				cursor:pointer;
-			}
-			#loader{
-				z-index:1;
-				width:100%;
-				height:100%;
-			}
-			#load{
-				position:absolute;
-				width:100%;
-				height:100%;
-				top:0;
-				left:0;
-				background-color:black;
-				opacity:0.5;
-			}
-			#connect{
-				position:absolute;
-				top:50%;
-				left:47%;
-				margin-right:75px;
-				width:220px;
-				height:25px;
-				background-color:#3498db;
-				opacity:1;
-				color:white;
-				text-align:center;
-				line-height:25px;
-			}
-			#text{
-				font-size:14px;
-			}
-        </style>
-
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		<script src="./libs/babylon4/babylon.js"></script>
 		<script src="./libs/babylon4/babylonjs.loaders.min.js"></script>
@@ -79,35 +11,177 @@
 		<script src="./libs/babylon4/babylon.inspector.bundle.js"></script>
 		<script src="./libs/babylon4/babylon.gui.min.js"></script>
 		<script src="./libs/babylon4/earcut.min.js"></script>
+		<script src="./libs/dist/echarts.min.js"></script>
 		<script src="./libs/jquery-3.1.1.min.js"></script>
-		<script src="./libs/background.js"></script>
 		<script src="./libs/GlobeHandler.js"></script>
+		<script src="./libs/dist/bootstrap.min.js"></script>
+		<script src="./libs/dist/bootstrap-datepicker.min.js"></script>
+		<script src="./libs/dist/bootstrap-datepicker.ko.min.js"></script>
+		<link href="./libs/css/index.css" rel="stylesheet">
+		<link href="./libs/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet">
+		<link href="./libs/css/bootstrap.css" rel="stylesheet">
     </head>
 
    <body>
-
     <canvas id="viewport" touch-action="none"></canvas>
 	<button id="closeBtn" onclick="onRestore()">CLOSE</button>
-	<div id="toolTip"></div>
-	<div id="loader">
-		<div id="load"></div>
-		<div id="connect"><span>Connect Region...<br><span id="text">0/0 NATION Connected</span></span></div>
+	<div class='toggle'>
+		<span>GLOBE 재질 변경</span><br>
+		<label class="switch">
+			<input type="checkbox" id="toggle_chk" onclick="changeGlobeMat()">
+			<span class="slider round"></span>
+		</label>
 	</div>
+
+	<div id="wrapper">
+		<div id="contents">
+			<table class="detail">
+				<tr>
+					<td class="agency_details" id="using_chart">
+						<div class="chart_wrapper">
+							<span id="title">통신사망 트래픽 사용량 & 회선비용</span>
+							<div class="detail_title_img" id="title_img"></div>
+							<div class="calendar" onclick="term_search_pop(this, 'AC')"></div>
+							<div class="detail_cost_wrapper">
+								<div id="detail_cost"><span id='txt_won'>&#8361; </span><span id="agency_won">0<span></div>
+								<div id="unit"><span style="" class="unit">&nbsp(단위 : 천원)</span></div>
+							</div>
+							<div id="agency_chart" class="chart_details"></div>
+						</div>
+					</td>
+					<td class="csp_details" id="using_chart">
+						<div class="chart_wrapper">
+							<span id="title">CSP 트래픽 사용량 & 회선비용</span>
+							<div class="detail_title_img" id="title_img"></div>
+							<div class="calendar" onclick="term_search_pop(this, 'CSP')"></div>
+							<div class="detail_cost_wrapper">
+								<div id="detail_cost"><span id='txt_won'>&#8361; </span><span id="csp_won">0<span></div>
+								<div id="unit"><span style="" class="unit">&nbsp(단위 : 천원)</span></div>
+							</div>
+							<div id="csp_chart" class="chart_details"></div>
+						</div>
+					</td>
+					<td class="cx_details" id="using_chart">
+						<div class="chart_wrapper">
+							<span id="title">CX 트래픽 사용량 & 회선비용</span>
+							<div class="detail_title_img" id="title_img"></div>
+							<div class="calendar" onclick="term_search_pop(this, 'CX')"></div>
+							<div class="detail_cost_wrapper">
+								<div id="detail_cost"><span id='txt_won'>&#8361; </span><span id="cx_won">0<span></div>
+								<div id="unit"><span style="" class="unit">&nbsp(단위 : 천원)</span></div>
+							</div>
+							<div id="cx_chart" class="chart_details"></div>
+						</div>
+					</td>
+				</tr>
+			</table>
+			
+			<table class="detail_title">
+				<tr style="height:60%;"><td><div class="image"></div></td></tr>
+				<tr style="height:13%;" class="title">
+					<td class="loc_title">SEC SUWON DC</td>
+				</tr>
+				<tr style="height:27%;" class="content">
+					<td>
+						<span class="location">SAMSUNG ELECTRONICS SUWON DC</span><br>
+						<span class="status">Status : Good</span><br>
+						<span class="details">RTT : 1ms / Packet Loss : 0%</span>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div id="info">
+		<div id="traffic_box">
+			<span id="title">전체 트래픽 사용량 & 전체 회신비용</span>
+			<div class="traffic_title_img" id="title_img"></div>
+			<div class="calendar" onclick="term_search_pop(this, 'T')"></div>
+			<div class="costWrapper">
+				<div id="cost"><span id='txt_won'>&#8361; </span><span id="won">0<span></div>
+				<span style="" class="al">&nbsp(단위 : 천원)</span>
+			</div>
+			<div id="traffic_detail"></div>
+			<span class="pre_year">2020년</span>
+			<span class="cur_year">2021년</span>
+		</div>
+		<div id="topN_box">
+			<div id="csp">				
+				<span id="title">Top N CSP 사용량 (%)</span>
+				<div class="csp_title_img" id="title_img"></div>
+				<div class="calendar" onclick="term_search_pop(this, 'T')"></div>
+				<div id="pie_cloud">
+					<ul>
+						<li><div id="pie_aws"></div><span id="pie_title">AWS</span></li>
+						<li><div id="pie_azure"></div><span id="pie_title">AZURE</span></li>
+						<li><div id="pie_nbp"></div><span id="pie_title">NBP</span></li>
+						<li><div id="pie_oci"></div><span id="pie_title">OCI</span></li>
+					</ul>
+				</div>
+				<div id="bar_response"></div>
+				<div id="bar_packet"></div>
+				<div class="vertical_line"></div>
+			</div>
+			<div id="position">
+				<span id="title" class="topNhold">Top N 거점 트래픽 사용량 (Gbyte)</span>
+				<div class="position_title_img" id="title_img"></div>
+				<div class="calendar" onclick="term_search_pop(this, 'T')"></div>
+				<div id="position_detail"></div>
+			</div>
+		</div>
+		<div id="rate_box">
+			<div id="service">
+				<span id="title">서비스별 사용 비율 (%)</span>
+				<div class="service_title_img" id="title_img"></div>
+				<div class="calendar" onclick="term_search_pop(this, 'T')"></div>
+				<div id="pie_service"></div>
+			</div>
+			<div id="depart">
+				<span id="title">사업부별 사용 비율 (%)</span>
+				<div class="service_title_img" id="title_img"></div>
+				<div id="pie_depart"></div>
+			</div>
+		</div>		
+	</div>
+	
+	<div id="term_search">
+		<div class="term_title" onmousedown="dragMouseDown()"><span>기간 검색 옵션</span> <div><span onclick="close_term_pop()">X</span></div></div>
+		<div class="analasys_term_wrapper">
+			<span id="sub_title">분석 주기</span>
+			<ul>
+				<li><div class="setTerm" onclick="setTerm(this, 'Y')">년간</div></li>
+				<li><div class="setTerm" onclick="setTerm(this, 'M')" style="background-color:#00a8e9;color:white;">월간</div></li>
+				<li><div class="setTerm" onclick="setTerm(this, 'W')">주간</div></li>
+				<li><div class="setTerm" onclick="setTerm(this, 'D')">일간</div></li>
+				<li><div class="setTerm" onclick="setTerm(this, 'R')">실시간</div></li>
+			</ul>
+		</div>
+		<div class="select_temp_wrapper">
+			<span id="sub_title">기간 선택</span>
+			
+			<div id="start_date">
+				<input type="text" id="start" class="form-control" value="" onfocus='this.blur()'>
+			</div>
+			<span class='txt'>~</span>
+			<div id="end_date">
+				<input type="text" id="end" class="form-control" value="" onfocus='this.blur()'>
+			</div>
+		</div>
+		<div class="button_wrapper">
+			<button id="searchBtn" onclick="onSearch()">검색</button>
+		</div>
+	</div>
+	
 	<script>
 		var canvas = document.getElementById('viewport');
 		var engine = new BABYLON.Engine(canvas, true);
 		var handler = undefined;
 		var init = function(){
 			var scene = new BABYLON.Scene(engine);
-			//function load(){$("#test").css("display","block");}
-			//scene.registerBeforeRender(load);
-			//scene.unregisterBeforeRender(load);
 			handler = new GlobeHandler(scene, engine);
 			scene.onPointerDown = function(evt, pickResult){
 				var pickInfo = scene.pick(scene.pointerX, scene.pointerY, function(mesh){return mesh.isPickable;});
 				targetMesh = pickInfo.pickedMesh;
 				if(pickResult.hit){
-					console.log(pickInfo.pickedPoint);
 				}
 			}
 			return scene;
@@ -115,76 +189,16 @@
 		var scene = init();
 
 		engine.runRenderLoop(function(){
-		  scene.render();
+			scene.render();
 		});
 
 		window.addEventListener('resize', function(){
-		  engine.resize();
+			handler.rePosition();
+			handler.chartResize();
+			engine.resize();
 		});
-		
-		function onRestore(){
-			handler.showCountry();
-		}
 	</script>
-	
-    <script type="application/vertexShader" id="vertexPlanet">
-        precision highp float;
-
-        // Attributes
-        attribute vec3 position;
-        attribute vec3 normal;
-        attribute vec2 uv;
-
-        // Uniforms
-        uniform mat4 world;
-        uniform mat4 worldViewProjection;
-
-        // Varying
-        varying vec2 vUV;
-        varying vec3 vPositionW;
-        varying vec3 vNormalW;
-
-        void main(void) {
-            vec4 outPosition = worldViewProjection * vec4(position, 1.0);
-            gl_Position = outPosition;
-
-            vPositionW = vec3(world * vec4(position, 2.5));
-            vNormalW = normalize(vec3(world * vec4(normal, 0.0)));
-
-            vUV = uv;
-        }
-    </script>
-
-    <script type="application/fragmentShader" id="fragmentPlanet">
-        precision highp float;
-
-        // Varying
-        varying vec2 vUV;
-        varying vec3 vPositionW;
-        varying vec3 vNormalW;
-
-        // Refs
-        uniform vec3 lightPosition;
-        uniform sampler2D diffuseTexture;
-        uniform sampler2D nightTexture;
-
-
-        void main(void) {
-            vec3 direction = lightPosition - vPositionW;
-            vec3 lightVectorW = normalize(direction);
-
-
-            // diffuse
-            float lightDiffuse = max(0.11, dot(vNormalW, lightVectorW)); //->light diffuse of shader low:brighter
-			
-            vec3 color;
-            vec4 nightColor = texture2D(nightTexture, vUV).rgba;
-            vec3 diffuseColor = texture2D(diffuseTexture, vUV).rgb;
-
-            color = diffuseColor * lightDiffuse + (nightColor.rgb * nightColor.a * pow((1.0 - lightDiffuse), 6.0));
-            gl_FragColor = vec4(color, 1.0);
-        }
-    </script>
+	<script src="./libs/index.js"></script>
    </body>
 
 </html>
