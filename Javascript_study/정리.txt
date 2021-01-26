@@ -1,0 +1,78 @@
+1. spread 연산자
+   arr = [1,2,3,4];
+   Array.prototype.pushAll = function(items){
+	if(!Array.isArray(items)){
+	   console.log("it is not array");
+	}
+	return this.push(...items);
+   }
+   arr.pushAll([5,6,7,8]);
+   -> [1,2,3,4,5,6,7,8]
+   
+   function read(...items){
+	return items
+   }
+   read(1,2,3,4,5)
+   -> [1,2,3,4,5]
+
+2. default parametes 
+   var link = function(h,c,u){
+    	var h = h||50;
+    	var c = c||'red'
+    	var u = u||'http://'
+    	console.log(h,c,u)
+   }
+   -> undefined일 경우 default값 지정
+
+3. multi-line strings
+   \n또는 \t없이 ``로 멀티라인 가능
+
+4. destructuring assignment
+   var s = {house : 3, mouse : 2}
+   var {house, mouse} = s
+
+5 Enhanced Object Literals
+   var serviceBase = {port: 3000, url: 'azat.co'},
+   getAccounts = function(){return [1,2,3]}
+   var accountService = {
+    	__proto__: serviceBase,
+    	getAccounts,
+    	toString() {
+    	    return JSON.stringify((super.valueOf()))
+    	},
+       getUrl() {return "http://" + this.url + ':' + this.port},
+       [ 'valueOf_' + getAccounts().join('_') ]: getAccounts()
+    }
+
+6. Arrow Functions(항상 익명함수)
+   $('.btn').click((event) => {
+   	this.sendData()
+   })
+
+7. Promise
+   var wait1000 =  ()=> new Promise((resolve, reject)=> {setTimeout(resolve, 1000)})
+
+   wait1000()
+    	.then(function() {
+           console.log('Yay!')
+           return wait1000()
+    	})
+       .then(function() {
+        	console.log('Wheeyee!')
+       });
+   ->중첩 setTimeout에서 promise를 사용해 간단히 만들 수 있다.
+
+8. class
+   class baseModel{
+	constructor(options = {}, data = []) {//class constructor
+	   this.name = 'Base'
+	   this.url = 'http://'
+	   this.data = data
+	   this.options = options
+	}
+
+	getName(){
+	   console.log(`Class name : ${this.name}`)
+	}
+   }
+   => constructor은 class내에서 한개만 존재할 수 있다. constructor내에서 메서드는 사용할 수 없다
