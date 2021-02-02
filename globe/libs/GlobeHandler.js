@@ -37,43 +37,43 @@ var GlobeHandler = function(scene, engine){
 	
 	//longitude and latitude
 	this.LonLat = {};
-	this.allLonLat = {"California(north)":{lat:36.778259,lon: -119.417931, aws:'Y',gcp:'N',samsung:'N'},시드니:{lat:-33.865143,lon:151.209900, aws:'Y', gcp:'Y',samsung:'N'}
-				 ,Ohio:{lat:40.367474,lon:-82.996216, aws:'Y', gcp:'N',samsung:'N'}
-				 , 북경:{lat:39.916668,lon:116.383331, samsung:'Y',continent:'ASIA',agency:'Y',csp:'N',cx:'N'}
-				 ,Melbourne:{lat:-37.8082,lon:144.9578, aws:'N', gcp:'Y',samsung:'N'},Toronto:{lat:43.651070,lon:-79.347015, aws:'N', gcp:'Y',samsung:'N'}
-				 ,Tokyo:{lat:35.652832,lon:139.839478, aws:'Y', gcp:'Y',samsung:'N'},"Virginia(north)":{lat:37.926868,lon:-78.024902, aws:'Y', gcp:'Y',samsung:'N'}
-				 ,Montreal:{lat:45.630001,lon:73.519997, aws:'N', gcp:'Y',samsung:'N'},"Salt Lake City":{lat:40.758701,lon:-111.876183, aws:'N', gcp:'Y',samsung:'N'}
-				 ,"Canada(centeral)":{lat:50,lon:-79, aws:'Y', gcp:'N',samsung:'N'}
-				 ,홍콩:{lat:22.302711,lon:114.177216, samsung:'Y',continent:'ASIA', agency:'Y',csp:'Y',cx:'Y'}
-				 ,Stockholm:{lat:59.3326,lon:18.0649, aws:'Y', gcp:'N',samsung:'N'},Ireland:{lat:53.350140,lon:-6.266155, aws:'Y', gcp:'N',samsung:'N'}
-				 ,런던:{lat:51.5073509,lon:-0.1277583, samsung:'Y',continent:'EU', agency:'Y',csp:'Y',cx:'Y'}
-				 ,파리:{lat:48.864716,lon:2.349014, samsung:'N',continent:'EU',agency:'Y',csp:'N',cx:'N'}
-				 ,Frankfurt:{lat:50.110924,lon:8.682127, aws:'Y', gcp:'Y',samsung:'N'},Zurich:{lat:47.3667,lon:8.5500, aws:'Y', gcp:'Y',samsung:'N'}
-				 ,Milan:{lat:45.464664,lon:9.188540, aws:'Y', gcp:'N',samsung:'N'},Spain:{lat:40.2085,lon:-3.7130, aws:'Y', gcp:'N',samsung:'N'}
-				 ,"Sao Paulo":{lat:-23.533773,lon:-46.625290, aws:'Y', gcp:'Y',samsung:'N'},"Cape Town":{lat:-33.918861,lon:18.423300, aws:'Y', gcp:'N',samsung:'N'}
-				 ,Bahrain:{lat:25.9434256,lon:50.6014985, aws:'Y', gcp:'N',samsung:'N'},Mumbai:{lat:19.076090,lon:72.877426, aws:'Y', gcp:'Y',samsung:'N'}
-				 ,Hyderabad:{lat:17.387140,lon:78.491684, aws:'Y', gcp:'N',samsung:'N'}
-				 ,싱가폴:{lat:1.290270,lon:103.851959, samsung:'Y',continent:'ASIA',agency:'Y',csp:'N',cx:'N'}
-				 ,Indonesia:{lat:-6.200000,lon:106.816666, aws:'Y', gcp:'N',samsung:'N'},Ningxia:{lat:36.015854,lon:106.242607, aws:'Y', gcp:'N',samsung:'N'}
-				 ,Osaka:{lat:34.669529,lon:135.497009, aws:'Y', gcp:'Y',samsung:'N'},"Asia Pacific(Melbourne)":{lat:-37.8082,lon:144.9578, aws:'Y', gcp:'N',samsung:'N'}
-				 ,"Las Vegas":{lat:36.114647,lon:-115.172813, aws:'N', gcp:'Y',samsung:'N'},"Los Angeles":{lat:34.052235,lon:-118.243683, aws:'N', gcp:'Y',samsung:'N'}
-				 ,"Carolina(south)":{lat:33.836082,lon:-81.163727, aws:'N', gcp:'Y',samsung:'N'},Netherland:{lat:52.2130,lon:5.2794, aws:'N', gcp:'Y',samsung:'N'}
-				 ,Belgium:{lat:51.260197,lon:4.402771, aws:'N', gcp:'Y',samsung:'N'},Warsaw:{lat:52.237049,lon:21.017532, aws:'N', gcp:'Y',samsung:'N'}
-				 ,Finland:{lat:60.192059,lon:24.945831, aws:'N', gcp:'Y',samsung:'N'},Doha:{lat:25.286106,lon:51.534817, aws:'N', gcp:'Y',samsung:'N'}
-				 ,델리:{lat:28.610001,lon:77.230003, samsung:'Y',continent:'ASIA',agency:'Y',csp:'N',cx:'N'}
-				 ,Taiwan:{lat:25.105497,lon:121.597366, aws:'N', gcp:'Y',samsung:'N'}
-				 ,Jakarta:{lat:-6.121435,lon:106.774124, aws:'N', gcp:'Y',samsung:'N'},Seoul:{lat:37.532600,lon:127.024612, aws:'Y', gcp:'Y',samsung:'N',continent:'ASIA'}
-				 ,Oregon:{lat:44,lon:-120.5, aws:'Y', gcp:'N',samsung:'N'}
-				 ,일본:{lat:36.2048,lon:138.2529, samsung:'Y',continent:'ASIA',agency:'Y',csp:'N',cx:'N'}
-				 ,독일:{lat:52.520008,lon:13.404954, samsung:'Y',continent:'EU',agency:'Y',csp:'N',cx:'N'}
-				 ,모스크바:{lat:55.751244,lon:37.618423, samsung:'Y',continent:'EU',agency:'Y',csp:'N',cx:'N'}
-				 ,첸나이:{lat:13.067439,lon:80.237617, samsung:'Y',continent:'ASIA',agency:'Y',csp:'N',cx:'N'}
-				 ,상해:{lat:31.224361,lon:121.469170, samsung:'Y',continent:'ASIA',agency:'Y',csp:'N',cx:'N'}
-				 ,상암:{lat:37.574373,lon:126.883361, samsung:'Y',continent:'ASIA',agency:'Y',csp:'N',cx:'N'}
-				 ,수원:{lat:37.263490,lon:127.028302, samsung:'Y',continent:'ASIA',agency:'Y',csp:'Y',cx:'Y'}
-				 ,산호세:{lat:37.335480,lon:-121.893028, samsung:'Y',continent:'AME', agency:'Y',csp:'Y',cx:'Y'}
-				 ,뉴저지:{lat:39.833851,lon:-74.871826, samsung:'Y',continent:'AME',agency:'Y',csp:'N',cx:'N'}
-				 ,브라질:{lat:-23.533773,lon:-46.625290, samsung:'Y',continent:'AME',agency:'Y',csp:'N',cx:'N'}};
+	this.allLonLat = {"California(north)":{lat:36.778259,lon: -119.417931, aws:'Y',gcp:'N',sam:'N'},시드니:{lat:-33.865143,lon:151.209900, aws:'Y', gcp:'Y',sam:'N'}
+				 ,Ohio:{lat:40.367474,lon:-82.996216, aws:'Y', gcp:'N',sam:'N'}
+				 , 북경:{lat:39.916668,lon:116.383331, sam:'Y',continent:'ASIA',agency:'Y',csp:'N',cx:'N'}
+				 ,Melbourne:{lat:-37.8082,lon:144.9578, aws:'N', gcp:'Y',sam:'N'},Toronto:{lat:43.651070,lon:-79.347015, aws:'N', gcp:'Y',sam:'N'}
+				 ,Tokyo:{lat:35.652832,lon:139.839478, aws:'Y', gcp:'Y',sam:'N'},"Virginia(north)":{lat:37.926868,lon:-78.024902, aws:'Y', gcp:'Y',sam:'N'}
+				 ,Montreal:{lat:45.630001,lon:73.519997, aws:'N', gcp:'Y',sam:'N'},"Salt Lake City":{lat:40.758701,lon:-111.876183, aws:'N', gcp:'Y',sam:'N'}
+				 ,"Canada(centeral)":{lat:50,lon:-79, aws:'Y', gcp:'N',sam:'N'}
+				 ,홍콩:{lat:22.302711,lon:114.177216, sam:'Y',continent:'ASIA', agency:'Y',csp:'Y',cx:'Y'}
+				 ,Stockholm:{lat:59.3326,lon:18.0649, aws:'Y', gcp:'N',sam:'N'},Ireland:{lat:53.350140,lon:-6.266155, aws:'Y', gcp:'N',sam:'N'}
+				 ,런던:{lat:51.5073509,lon:-0.1277583, sam:'Y',continent:'EU', agency:'Y',csp:'Y',cx:'Y'}
+				 ,파리:{lat:48.864716,lon:2.349014, sam:'N',continent:'EU',agency:'Y',csp:'N',cx:'N'}
+				 ,Frankfurt:{lat:50.110924,lon:8.682127, aws:'Y', gcp:'Y',sam:'N'},Zurich:{lat:47.3667,lon:8.5500, aws:'Y', gcp:'Y',sam:'N'}
+				 ,Milan:{lat:45.464664,lon:9.188540, aws:'Y', gcp:'N',sam:'N'},Spain:{lat:40.2085,lon:-3.7130, aws:'Y', gcp:'N',sam:'N'}
+				 ,"Sao Paulo":{lat:-23.533773,lon:-46.625290, aws:'Y', gcp:'Y',sam:'N'},"Cape Town":{lat:-33.918861,lon:18.423300, aws:'Y', gcp:'N',sam:'N'}
+				 ,Bahrain:{lat:25.9434256,lon:50.6014985, aws:'Y', gcp:'N',sam:'N'},Mumbai:{lat:19.076090,lon:72.877426, aws:'Y', gcp:'Y',sam:'N'}
+				 ,Hyderabad:{lat:17.387140,lon:78.491684, aws:'Y', gcp:'N',sam:'N'}
+				 ,싱가폴:{lat:1.290270,lon:103.851959, sam:'Y',continent:'ASIA',agency:'Y',csp:'N',cx:'N'}
+				 ,Indonesia:{lat:-6.200000,lon:106.816666, aws:'Y', gcp:'N',sam:'N'},Ningxia:{lat:36.015854,lon:106.242607, aws:'Y', gcp:'N',sam:'N'}
+				 ,Osaka:{lat:34.669529,lon:135.497009, aws:'Y', gcp:'Y',sam:'N'},"Asia Pacific(Melbourne)":{lat:-37.8082,lon:144.9578, aws:'Y', gcp:'N',sam:'N'}
+				 ,"Las Vegas":{lat:36.114647,lon:-115.172813, aws:'N', gcp:'Y',sam:'N'},"Los Angeles":{lat:34.052235,lon:-118.243683, aws:'N', gcp:'Y',sam:'N'}
+				 ,"Carolina(south)":{lat:33.836082,lon:-81.163727, aws:'N', gcp:'Y',sam:'N'},Netherland:{lat:52.2130,lon:5.2794, aws:'N', gcp:'Y',sam:'N'}
+				 ,Belgium:{lat:51.260197,lon:4.402771, aws:'N', gcp:'Y',sam:'N'},Warsaw:{lat:52.237049,lon:21.017532, aws:'N', gcp:'Y',sam:'N'}
+				 ,Finland:{lat:60.192059,lon:24.945831, aws:'N', gcp:'Y',sam:'N'},Doha:{lat:25.286106,lon:51.534817, aws:'N', gcp:'Y',sam:'N'}
+				 ,델리:{lat:28.610001,lon:77.230003, sam:'Y',continent:'ASIA',agency:'Y',csp:'N',cx:'N'}
+				 ,Taiwan:{lat:25.105497,lon:121.597366, aws:'N', gcp:'Y',sam:'N'}
+				 ,Jakarta:{lat:-6.121435,lon:106.774124, aws:'N', gcp:'Y',sam:'N'},Seoul:{lat:37.532600,lon:127.024612, aws:'Y', gcp:'Y',sam:'N',continent:'ASIA'}
+				 ,Oregon:{lat:44,lon:-120.5, aws:'Y', gcp:'N',sam:'N'}
+				 ,일본:{lat:36.2048,lon:138.2529, sam:'Y',continent:'ASIA',agency:'Y',csp:'N',cx:'N'}
+				 ,독일:{lat:52.520008,lon:13.404954, sam:'Y',continent:'EU',agency:'Y',csp:'N',cx:'N'}
+				 ,모스크바:{lat:55.751244,lon:37.618423, sam:'Y',continent:'EU',agency:'Y',csp:'N',cx:'N'}
+				 ,첸나이:{lat:13.067439,lon:80.237617, sam:'Y',continent:'ASIA',agency:'Y',csp:'N',cx:'N'}
+				 ,상해:{lat:31.224361,lon:121.469170, sam:'Y',continent:'ASIA',agency:'Y',csp:'N',cx:'N'}
+				 ,상암:{lat:37.574373,lon:126.883361, sam:'Y',continent:'ASIA',agency:'Y',csp:'N',cx:'N'}
+				 ,수원:{lat:37.263490,lon:127.028302, sam:'Y',continent:'ASIA',agency:'Y',csp:'Y',cx:'Y'}
+				 ,산호세:{lat:37.335480,lon:-121.893028, sam:'Y',continent:'AME', agency:'Y',csp:'Y',cx:'Y'}
+				 ,뉴저지:{lat:39.833851,lon:-74.871826, sam:'Y',continent:'AME',agency:'Y',csp:'N',cx:'N'}
+				 ,브라질:{lat:-23.533773,lon:-46.625290, sam:'Y',continent:'AME',agency:'Y',csp:'N',cx:'N'}};
 					
 	this.networkLine = {0:{src:'산호세',dst:'뉴저지'}, 1:{src:'산호세', dst:'뉴저지'}, 2:{src:'산호세', dst:'브라질'}, 3:{src:'싱가폴', dst:'독일'}, 
 						4:{src:'런던', dst:'싱가폴'}, 5:{src:'런던', dst:'모스크바'}, 6:{src:'홍콩', dst:'델리'}, 7:{src:'홍콩', dst:'첸나이'}, 
@@ -92,7 +92,7 @@ GlobeHandler.prototype.init = function(){
 		var lat = [], name = [];
 		for(k in handler.allLonLat){
 			var use = handler.allLonLat[k];
-			if(use.samsung == 'Y'){
+			if(use.sam == 'Y'){
 				lat.push(use.lat);
 			}
 		}
@@ -101,7 +101,7 @@ GlobeHandler.prototype.init = function(){
 		for(var i=0;i<lat.length;i++){
 			for(k in handler.allLonLat){
 				var use = handler.allLonLat[k];
-				if(use.lat == lat[i] && use.samsung == 'Y'){
+				if(use.lat == lat[i] && use.sam == 'Y'){
 					name.push(k);
 				}
 			}
@@ -1447,7 +1447,7 @@ GlobeHandler.prototype.updateData = function(nation){
 	}
 	nation = handler.getLanguage(nation).toUpperCase();
 	$('.loc_title').text("SEC "+nation+" DC");
-	$('.location').text("SAMSUNG "+nation+" DC");
+	$('.location').text(nation+" DC");
 	$('.status').text("Status : "+stat);
 	$('.details').text("RTT : 1ms / Packet Loss : 0%");
 	var region = handler.getLanguage(nation);
