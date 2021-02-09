@@ -1,0 +1,48 @@
+﻿topology 개요
+
+참고 libraries
+qunee :: http://demo.qunee.com/#Public%20Server%20Network
+draw.js :: https://freegroup.github.io/draw2d/index.html#/examples/section11
+d3.js :: https://observablehq.com/@d3/mobile-patent-suits
+cytoscape :: https://js.cytoscape.org/
+
+
+메뉴
+
+::편집모드
+
+-추가
+ 장비 - tap1:{장비명, ip, 위치정보(company, building, floor, room)}, tap2:{등록된 장비정보} -> 장비명, ip정보 출력
+ 도형 - 도형정보:{text, textcolor, 도형color, border 등}
+ 텍스트 - 텍스트 편집:{text, textcolor, font-size, font-style}
+ 이미지 - 이미지 정보:{text}
+
+::라인
+  직선 - 장비간연결:{interface정보, ip정보}, 그 외:{line color, line width, font-size, font-color} -> 인터페이스 정보 출력
+  다각형 - 장비간연결:{interface정보, ip정보}, 그 외:{just draw line} -> 인터페이스 정보 출력
+ 
+::선택
+  하나만 선택
+  그룹 선택
+
+::컨텍스트
+  장비 - rename, send to top, send to bottom, modify, remove
+  도형 - rename, send to top, send to bottom, modify, remove
+  텍스트 - rename, send to top, send to bottom, modify, remove
+  이미지 - rename, send to top, send to bottom, modify, remove
+  선 - rename, send to top, send to bottom, modify, remove
+  
+::nav bar
+  tree구조
+  
+::zoom and out(svg사용해야함)
+
+::element resizing 기능+
+::overview 기능+
+
+::이름 가리기 기능+
+::인터페이스 가리기 기능+
+  
+
+등록된 장비정보: 장비명,ip,사용중, 3개 extra로 더 만들기
+  

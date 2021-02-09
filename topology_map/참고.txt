@@ -1,0 +1,14 @@
+기울기로 각도 구하기
+
+radius = Math.atan((x2-x1)/(y2-y1))
+
+if radius < 0 :
+   while(true):
+	radius += Math.PI*2;
+	if(radius > 0):
+		break;
+
+degree = radius * 180 / Math.PI
+
+
+rotate(degree)
