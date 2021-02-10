@@ -30,7 +30,7 @@
 									<div id='f3' class='topoDiv' onclick='chgTopoVal(this.id, 1)'><span>f 0/3</span></div>
 								</div>
 							</td>
-							<td><div class='txt_wrapper'><span>IP Address : </span></div><input type='text' id='ethernet_ip1' class='info' placeholder='127.0.0.1'/></td>
+							<td><div class='txt_wrapper'><span>IP Address : </span></div><input type='text' id='ethernet_ip1' class='ethIP' placeholder='127.0.0.1'/></td>
 						</tr>
 					</table>
 					<table style="margin-top:30px">
@@ -51,7 +51,7 @@
 									<div id='f33' class='topoDiv' onclick='chgTopoVal(this.id, 2)'><span>f 0/3</span></div>
 								</div>
 							</td>
-							<td><div class='txt_wrapper'><span>IP Address : </span></div><input type='text' id='ethernet_ip2' class='info' placeholder='127.0.0.1'/></td>
+							<td><div class='txt_wrapper'><span>IP Address : </span></div><input type='text' id='ethernet_ip2' class='ethIP' placeholder='127.0.0.1'/></td>
 						</tr>
 					</table>
 				</div>
@@ -108,8 +108,8 @@
 			</div>
 			<div class='confirm_grp'>
 				<div class='btn_grp'>
-					<button id="cancel" >취소</button>
-					<button id="confirm" >확인</button>
+					<button id="cancel" onclick="confirmLineInfo(this.id)">취소</button>
+					<button id="confirm" onclick="confirmLineInfo(this.id)">확인</button>
 				</div>
 			</div>
 		</div>
@@ -122,7 +122,9 @@
 	var preInterTr = undefined;
 	var activePal = undefined;
 	function cls_modal(){
+		reset_modal();
 		$('.modal_edit_line').hide();
+		isEditor = false;
 	}
 	
 	function interfaceTab(id){
@@ -141,24 +143,34 @@
 		activePal = idx == 1 ? '#palette1' : '#palette2';
 	}
 	
-	$( document ).ready(function() {
-		var html = '';
-		for(var i=2;i<=100;i+=2){
-			html += "<div id='size_"+i+"' class='topoDiv' onclick='chgTopoVal(this.id, 4)'><span>"+i+"</span></div>"
+	function reset_modal(){
+		$("interface").attr('class','active');
+		$("style_btn").attr('class','');
+		$("detail_btn").attr('class','');
+		$(".topo_selectedTxt").val('선택해주세요');
+		$(".colorPicker").val('#FFFFFF');
+		$(".ethIP").empty();
+		$(".palette").css("background-color","white");
+	}
+	
+	function confirmLineInfo(id){
+		if(id == 'cancel'){
+			if(mapElem.has(curLine))
+				mapElem.delete(curLine)
+			$("#"+curLine).parent().remove();
+			$("#line_txt_"+(dynaId.line_txt-1)).remove();
+			cls_modal();
+		}else{
+			saveData.eth1 = $("#topo_selectedTxt1").val();
+			saveData.eth2 = $("#topo_selectedTxt2").val();
+			saveData.thickness = $("#topo_selectedTxt3").val();
+			saveData.lineColor = $("#lineColor").val();
+			saveData.fontSize = $("#topo_selectedTxt4").val();
+			saveData.fontColor = $("#fontColor").val();
+			saveData.eth1IP1 = $("#ethernet_ip1").val();
+			saveData.eth1IP2 = $("#ethernet_ip2").val();
+			setLine();
+			cls_modal();
 		}
-		
-		$("#topo_dropDown4").append(html);
-
-		//color picker
-		$(".colorPicker").each(function(){
-			$(this).minicolors({
-				letterCase: $(this).attr('data-letterCase') || 'uppercase',
-				change:function(hex){
-					$(activePal).css('background-color',hex);
-				}
-			});
-			$(".minicolors-swatch").hide()
-			$(".minicolors-panel").css("left","0px")
-		})
-	});
+	}
 	</script>

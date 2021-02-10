@@ -1,5 +1,6 @@
-isActive = false;
-prevIdx = undefined;
+var isActive = false;
+var prevIdx = undefined;
+var isEditor = false;
 
 function doDropdown(idx){
 	isActive = isActive == false ? true : false;
@@ -37,6 +38,7 @@ function doDropdown(idx){
 
 function chgTopoVal(id, idx){
 	var val = $("#"+id+">span").text();
+	$("#topo_selectedTxt"+idx).val('');
 	$("#topo_selectedTxt"+idx).val(val);
 	$(".topo_dropDown").hide()
 	$(".topo_select").css("border","1px solid #ccc");
@@ -44,11 +46,13 @@ function chgTopoVal(id, idx){
 }
 
 window.addEventListener('mousedown',function(ev){
-	targetCln = ev.target.className
-	if(!targetCln.includes('topo')){
-		isActive = false;
-		$(".topo_select").css("border","1px solid #ccc");
-		$(".topo_dropDown").css('z-index','0');
-		$(".topo_dropDown").hide()
+	if(isEditor == true){
+		targetCln = ev.target.className
+		if(!targetCln.includes('topo')){
+			isActive = false;
+			$(".topo_select").css("border","1px solid #ccc");
+			$(".topo_dropDown").css('z-index','0');
+			$(".topo_dropDown").hide()
+		}
 	}
 });
