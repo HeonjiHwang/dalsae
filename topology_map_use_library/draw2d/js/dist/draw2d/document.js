@@ -1,0 +1,26 @@
+var jsonDocument = [
+	{
+		"type": "CollapsibleJailhouse",
+		"id": "Collapsible_Jailhouse",
+		"x": 207,
+		"y": 162,
+		"width": 150,
+		"height": 200,
+		"alpha": 1,
+		"bgColor":"#fbe1e1",
+		"color":"#bb8585",
+		"userData": {},
+		"ports": [],
+	},
+	{
+		"type": "CollapsibleJailhouse",
+		"id": "Collapsible_Jailhouse2",
+		"x": 500,
+		"y": 162,
+		"width": 300,
+		"height": 200,
+		"alpha": 1,
+		"userData": {},
+		"ports": [],
+	},
+]

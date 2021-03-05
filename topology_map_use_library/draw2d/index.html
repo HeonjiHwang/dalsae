@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta charset="utf-8">
+		
+		<!-- style sheet -->
+		<script type="text/javascript" src="./js/index.js" charset="UTF-8"></script>
+		<link type="text/css" rel="stylesheet" href="./css/aristo/jquery-ui-1.8.16.custom.css" />
+		<link type="text/css" rel="stylesheet" href="./css/dist/jquery.layout.css" />
+		<link type="text/css" rel="stylesheet" href="./css/bootstrap-theme.css" />
+
+		<!-- scripts -->
+		<script src="./js/dist/jquery/jquery.js"></script>
+		<script src="./js/dist/jquery/jquery.browser.js"></script>
+		<script src="./js/dist/jquery/jquery-ui.js"></script>
+		<script src="./js/dist/jquery/jquery.layout.js"></script>
+		<script src="./js/dist/bootstrap/bootstrap.min.js"></script>
+		
+		<!-- draw2D scripts -->
+        <script type="text/javascript" src="./js/dist/draw2d/draw2d.js" charset="UTF-8"></script>
+        <script type="text/javascript" src="./js/dist/draw2d/custom_draw2d.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/topo/TopoHandler.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/dist/draw2d/document.js" charset="UTF-8"></script>
+		
+		<link href="./css/index.css" rel="stylesheet"/>
+
+      </style>
+    </head>
+    <body>
+		<div class='header'>
+			<div id='title'>TOPOLOGY MAP</div>
+			<div id='tools'>
+				<ul>
+					<!--선택 & 맵클리어 & 저장-->
+					<li style='background-color:#eee;' id='sel-one'><button id='selOne' onclick='selectType(1)'></button></li>
+					<li id='sel-multi'><button id='selMulti' onclick='selectType(2)'></button></li>
+					<li><button id='clearAll' onclick='clearAll()'></button></li>
+					<li style='border-right:1px solid #ccc'><button id='save' onclick='save()'></button></li>
+					<li style='border:none;width:10px;'></li>
+					
+					<!--줌 이벤트-->
+					<li><button id='zoomIn' onclick='zoom(1)'></button></li>
+					<li><button id='zoomOut' onclick='zoom(2)'></button></li>
+					<li style='border-right:1px solid #ccc'><button id='fitAll' onclick='zoom(3)'></button></li>
+					<li style='border:none;width:10px;'></li>
+					
+					<!--에디트 모드-->
+					<li id='edit-background'><button id='edit' onclick='edit()'></button></li>
+					<li><button id='undo' onclick='historyEvent(1)'></button></li>
+					<li><button id='redo' onclick='historyEvent(2)'></button></li>
+					<li><button id='delete' onclick='remove()'></button></li>
+				</ul>
+			</div>
+		</div>
+		<div class="wrapper">
+			<div class = "nav">
+				<!--tree view-->
+				<div class='tree'>
+					<h2 class='subTitle'>Topology Structure</h1> 
+					<ul id="browser" class="filetree">
+					</ul>
+				</div>
+				<!--edit elements-->
+				<div class='edit-elem'>
+					<h1 class='subTitle'>EDIT TOOL</h1>
+					<div class='edit-tool'>
+						<button class='edit active' id='server' onclick="onTab('server')">SERVER</button>
+						<button class='edit' id='hub' onclick="onTab('hub')">SWITCH</button>
+						<button class='edit' id='router' onclick="onTab('router')">ROUTER</button>
+						<button class='edit' id='line' onclick="onTab('line')">LINE</button>
+						<button class='edit' id='figures' onclick="onTab('figures')">FIGURES</button>
+						<button id='close-edit' onclick="close_edit()">X</button>
+						<div class='edit-element'>
+							<ul id='elements'>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class='network-wrapper'>
+				<div onselectstart="javascript:/*IE8 hack*/return false" id="network">
+					<!--vis.js network canvas will be drawn-->
+				</div>
+			</div>
+			<img class="shadow" id="preview" style="border-radius:5px;overflow:hidden;position:absolute;top:10px;right:10px;width:150px;border:3px solid #ccc"/>
+		</div>
+		<div class='modal-popup'>
+			<div class='modal' id='modal'>
+				<div class='modal-header' onmousedown="dragMouseDown()">장비 추가(Add Equipment)<span id="close-modal" onclick="close_modal(1)">X</span></div>
+				<div class='modal-wrapper'>
+					<div class='modal-confirm-wrapper'>
+						<button class='modal-confirm-btn' onclick='onConfirm()'>확인</button>
+						<button class='modal-confirm-btn' onclick='close_modal(1)'>취소</button>
+					</div>
+					<div class='modal-tap-wrapper'>
+						<button class='modal-tab modal-active' id='equip-setting' onclick='modal_tab(this.id)'>장비설정</button>
+						<button class='modal-tab' id='equip-get' onclick='modal_tab(this.id)'>장비가져오기</button>
+						<button class='modal-tab' id='equip-detail' onclick='modal_tab(this.id)'>상세설정</button>
+					</div>
+					<div class='modal-info-wrapper'>
+						<div class='edit-inputs' id='equip-setting-tab'>
+							<h2>장비 설정</h2>
+							<table>
+								<tr>
+									<td style="width:10%; text-align:right; padding-right:1rem;">NAME</td>
+									<td><input class='edit-input' id='equip-name' type='text' placeholder='NAME'/></td>
+									<td style="width:10%; text-align:right; padding-right:1rem;">IP</td>
+									<td><input class='edit-input' id='equip-ip' type='text' placeholder='1.1.1.1'/></td>
+								</tr>
+							</table>
+							<h2>위치 설정</h2>
+							<table style="height:8rem">
+								<tr>
+									<td style="width:10%; text-align:right; padding-right:1rem;">COMPANY</td>
+									<td>
+										<button class="dropbtn" onclick='dropdown(this)' id='company'>선택하세요<span>🔽</span></button>
+										<div class='dropdown-content'>
+											<a class='droplink' href='#' onclick='selectContent(this, "Rtnet1")'>Rtnet1</a>
+											<a class='droplink' href='#' onclick='selectContent(this, "Rtnet2")'>Rtnet2</a>
+											<a class='droplink' href='#' onclick='selectContent(this, "Rtnet3")'>Rtnet3</a>
+										</div>
+									</td>
+									<td style="width:10%; text-align:right; padding-right:1rem;">BUILDING</td>
+									<td>
+										<button class="dropbtn" onclick='dropdown(this);' id='building'>선택하세요<span>🔽</span></button>
+										<div class='dropdown-content'>
+											<a class='droplink' href='#' onclick='selectContent(this, "알티넷빌딩1")'>알티넷빌딩1</a>
+											<a class='droplink' href='#' onclick='selectContent(this, "알티넷빌딩2")'>알티넷빌딩2</a>
+											<a class='droplink' href='#' onclick='selectContent(this, "알티넷빌딩3")'>알티넷빌딩3</a>
+										</div>
+									</td>
+								</tr>
+								<tr style="margin-top:10px;">
+									<td style="width:10%; text-align:right; padding-right:1rem;">FLOOR</td>
+									<td>
+										<button class="dropbtn" onclick='dropdown(this);' id='floor'>선택하세요<span>🔽</span></button>
+										<div class='dropdown-content'>
+											<a class='droplink' href='#' onclick='selectContent(this, "1F")'>1F</a>
+											<a class='droplink' href='#' onclick='selectContent(this, "2F")'>2F</a>
+											<a class='droplink' href='#' onclick='selectContent(this, "3F")'>3F</a>
+										</div>
+									</td>
+									<td style="width:10%; text-align:right; padding-right:1rem;">ROOM</td>
+									<td>
+										<button class="dropbtn" onclick='dropdown(this);' id='room'>선택하세요<span>🔽</span></button>
+										<div class='dropdown-content'>
+											<a class='droplink' href='#' onclick='selectContent(this, "101")'>101</a>
+											<a class='droplink' href='#' onclick='selectContent(this, "201")'>201</a>
+											<a class='droplink' href='#' onclick='selectContent(this, "301")'>301</a>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class='edit-inputs' id='equip-get-tab' style='display:none'>
+							<h2>장비 가져오기</h2>
+							<table id='get-equips'>
+								<tr>
+									<th>장비명</th>
+									<th>IP</th>
+									<th>사용여부</th>
+									<th>비고</th>
+								</tr>
+							</table>
+						</div>
+						<div class='edit-inputs' id='equip-detail-tab' style='display:none'>
+							<h2>상세 설정</h2>
+							<table>
+								<tr>
+									<td>FONT-SIZE</td>
+									<td>
+										<button class="dropbtn" onclick='dropdown(this);'>선택하세요</button>
+										<div class='dropdown-content' id='font-size'>
+											<a class='droplink' href='#' onclick='selectFontSize(this, "5")'>5</a>
+											<a class='droplink' href='#' onclick='selectFontSize(this, "6")'>6</a>
+											<a class='droplink' href='#' onclick='selectFontSize(this, "7")'>7</a>
+										</div>
+									</td>
+									<td>FONT-COLOR</td>
+									<td>
+									//PALETTE
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		<div class='contextmenu-treeview _tree'>
+			<a href='#' class='_tree' onclick='chgTreeview("name")'>이름변경</a>
+			<a href='#' class='_tree' onclick='chgTreeview("delete")'>삭제</a>
+			<a href='#' class='_tree' onclick='chgTreeview("open")'>열기</a>
+			<a href='#' class='_tree' onclick='chgTreeview("close")'>닫기</a>
+		</div>
+		
+		<div id='jsonWrapper'>
+			
+		</div>
+    </body>
+</html>
