@@ -1,0 +1,39 @@
+CentOS7 서비스 올리기
+
+service 파일은 크게 Unit, Service, Install로 나뉨
+
+[Unit]
+Description=서비스 설명
+Requires=상위 의존성 (Optional)
+Before/After=유닛 시작의 전후 관계 설정 (독립적)
+			 "Before="에 나열된 유닛이 시작되기 전 실행
+			 "After=" 해당 유닛이 시작된 이후 나열된 유닛이 실행
+			 시스템 종료 시 반대 순서로 동작
+
+[Service]
+Type=[simple|forking|oneshot|notify|dbus]
+	 유닛 타입 선언
+	 simple(default값) : 유닛이 시작된 경우 systemd는 유닛의 시작이 완료되었다고 판단
+						다른 유닛과 통신하기 위해 소켓을 사용하는 경우 이 설정은 사용하면 안됨
+	 forking : 자식 프로세스
+	 
+
+
+//FINAL
+[Unit]
+Description=Eyas CCTV Service
+
+[Service]
+ExecStart=/usr/bin/node /eyas/cctv/eyas-cctvHandler.js
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=eyas_cctv
+Environment=PATH=/usr/bin:usr/local/bin
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
+[참조 사이트]
+https://seungdols.tistory.com/768
+https://gist.github.com/ccarrasc/c42e4c2e16231d21d891
