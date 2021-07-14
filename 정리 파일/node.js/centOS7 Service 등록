@@ -21,19 +21,23 @@ Type=[simple|forking|oneshot|notify|dbus]
 
 //FINAL
 [Unit]
-Description=Eyas CCTV Service
+Description=CCTV Service
 
 [Service]
-ExecStart=/usr/bin/node /eyas/cctv/eyas-cctvHandler.js
+ExecStart=/usr/bin/node [파일 위치]
 Restart=always
 StandardOutput=syslog
 StandardError=syslog
-SyslogIdentifier=eyas_cctv
+SyslogIdentifier=[systemctl 이름]
 Environment=PATH=/usr/bin:usr/local/bin
 Environment=NODE_ENV=production
 
 [Install]
 WantedBy=multi-user.target
+
+
+
+
 [참조 사이트]
 https://seungdols.tistory.com/768
 https://gist.github.com/ccarrasc/c42e4c2e16231d21d891
