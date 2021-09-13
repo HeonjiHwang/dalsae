@@ -5,7 +5,7 @@ html, css, javascript
 library
 [jquery, jquery_mincolor]
 
-make network topology_map without any library
+make network topology_map without any libraries
 
 ❗❗ should change src
 
