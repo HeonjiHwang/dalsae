@@ -1,0 +1,137 @@
+1.	Map Server
+	1)	Docker 설치
+
+		yum install -y yum-utils
+
+		/*docker 저장소 설정*/
+		yum-config-manager –add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+		/*docker 설치*/
+		yum install docker-ce docker-ce-cli containerd.io
+
+		/*docker 서비스 시작*/
+		systemctl start docker
+
+		/*도커 설치 확인*/
+		systemctl status docker
+
+	2)	Openstreetmap-tile-server
+
+		/*docker 볼륨*/
+		docker volume create openstreetmap-data
+
+		/*osm.pbf download*/
+		wget https://download.geofabrik.de/asia/south-korea-latest.osm.pbf
+		wget https://download.geofabrik.de/asia.poly
+
+		/*다운받은 pbf파일 postgresql 에 import*/
+		docker run \
+		-v /absolute/path/to/south-korea-latest.osm.pbf:/data.osm.pbf \
+		-v /absolute/path/to/asia.poly:/data.poly \
+		-v openstreetmap-data:/var/lib/postgresql/12/main \
+		overv/openstreetmap-tile-server \
+		import
+
+		/*서버 시작 (기본)*/
+		docker run \
+		-p 8080:80 \
+		-v openstreetmap-data:/var/lib/postgresql/12/main \
+		-d overv/openstreetmap-tile-server \
+		Run
+
+		/*렌더링된 타일로 서버 시작하기 위한 볼륨 생성 & 서버 시작*/
+		docker volume create openstreetmap-rendered-tiles
+		docker run \
+		-p 8080:80 \
+		-e THREAD=24 \
+		-e “OSM2PGSQL-EXTRA_ARGS=-C 4096” \
+		-v openstreetmap-data:/var/lib/postgresql/12/main \
+		-v openstreetmap-rendered-tiles:/var/lib/mod_tile \
+		-d overv/openstreetmap-tile-server \
+		run
+
+
+
+
+2.	CCTV Server (node.js, ffmpeg)
+	1)	ffmpeg 설치
+
+		yum localinstall –nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm
+		yum install ffmpeg
+
+		/*버전확인*/
+		ffmpeg -v (3.4.8 이상이어야 에러안남)
+		ffmpeg version 3.4.8 Copyright (c) 2000-2020 the FFmpeg developers
+		built with gcc 4.8.5 (GCC) 20150623 (Red Hat 4.8.5-39)
+
+	2)	node.js 설치
+
+		yum -y update
+		curl -sL https://rpm.nodesource.com/setup_14.x | sudo -E bash –
+		yum install -y nodejs
+
+		/*오류 발생 시 캐시 삭제 후 업데이트 진행*/
+		yum clean all
+		rm -rf /var/chace/yum/*
+
+		/*버전 확인*/
+		node -v (8 버전 이상이어야 es6 문법 에러 안남)
+
+	3)	node module 설치
+
+		npm install websocket
+		npm install http		
+		npm install node-rtsp-stream	//rtsp 사용
+		npm install net		//포트 사용 여부 확인용
+
+	4)	mpeg1muxer.js 변경
+
+		./node_modules/node-rtsp-stream/mpeg1muxer.js
+		//jsmpeg 최신 버전에서는 mpeg-ts 형식으로 래핑된 mpeg 스트림 필요
+		//mpeg1video -> mpegts -codec:v mpeg1video
+
+		this.spawnOptions = [
+			(("-stream_loop", "-1",) : optional (ffmpeg 버전 4.4이상부터 가능))
+			"-rtsp_transport", "tcp", "-i",
+			this.url,
+			'-f',
+			'mpegts',
+			'-codec:v',
+			'mpeg1video',
+			"-b:v", "1400k",
+			"-maxrate", "2400k",
+			"-bufsize", "1200k",
+			"-an", "-r", "24",
+			// additional ffmpeg options go here
+			...this.additionalFlags,
+			'-'
+		]
+
+	5)	videoStream.js 변경
+
+		VideoStream = function(options){ … this.clientSize = 0; …}
+		[onScoektConnect]
+		return socket.on(“close”, (code, message)=>{
+		this.clientSize = this.wsServer.clients.size;
+			if(this.clients.size <= 0) this.stop();	… });
+
+	6)	onvif 설치
+
+		npm install onvif
+
+	7)	node.js 서비스 등록
+
+		[경로] /etc/systemd/system/파일이름.service
+		[Unit]
+		Description=[설명]
+		[Service]
+		ExecStart=/usr/bin/node [실행파일경로]
+		Restart=always
+		SyslogIdentifier=[서비스이름]
+		Environment=PATH=/usr/bin:/usr/local/bin
+		Environment=NODE_ENV=production
+		[Install]
+		WantedBy=multi-user.target
+
+		[실행]
+		Systemctl start [서비스이름]
